@@ -3,8 +3,4 @@
   publish = ".next"
 
 [functions]
-  node_bundler = "esbuild"
   timeout = 30
-
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
