@@ -71,6 +71,7 @@ export default function Home() {
   const [copiedAll, setCopiedAll] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState(null);
   const [dismissed, setDismissed] = useState([]);
+  const [dismissedTags, setDismissedTags] = useState({});
   const [deeperMode, setDeeperMode] = useState(false);
 
   const [freeTime, setFreeTime] = useState([]);
@@ -158,6 +159,13 @@ export default function Home() {
   };
 
   const dismissCard = (i) => setDismissed(prev => [...prev, i]);
+
+  const dismissTag = (cardIndex, tagIndex) => {
+    setDismissedTags(prev => ({
+      ...prev,
+      [cardIndex]: [...(prev[cardIndex] || []), tagIndex]
+    }));
+  };
 
   const btnStyle = (active) => ({
     width: '100%', padding: '14px 0', borderRadius: 12, fontWeight: 600, fontSize: 14,
@@ -402,9 +410,19 @@ export default function Home() {
                       <p style={s.industryLabel}>{skill.industryLabel}</p>
                       <p style={s.evidence}>{skill.evidence}</p>
                       <div style={s.tagRow}>
-                        {skill.industries?.map((ind, j) => (
-                          <span key={j} style={skill.source === 'personal' ? s.tagPersonal : s.tag}>{ind}</span>
-                        ))}
+                        {skill.industries?.map((ind, j) => {
+                          if ((dismissedTags[i] || []).includes(j)) return null;
+                          return (
+                            <span
+                              key={j}
+                              title="Click to remove"
+                              style={{ ...skill.source === 'personal' ? s.tagPersonal : s.tag, cursor: 'pointer' }}
+                              onClick={() => dismissTag(i, j)}
+                            >
+                              {ind} ✕
+                            </span>
+                          );
+                        })}
                       </div>
                     </div>
                   );
@@ -436,7 +454,7 @@ export default function Home() {
                   {copiedAll ? 'Copied all skills ✓' : 'Copy all skills'}
                 </button>
                 <button
-                  onClick={() => { setStep('input'); setResult(null); setResumeText(''); setFreeTime([]); setGroupRole([]); setGoodAt([]); setMarketRead([]); setSeniority([]); setProjectPersonal(''); setProjectWork(''); setDependants(''); setDeepFalling(''); setDeepTeach(''); setDeepInvisible(''); setDeepMarket(''); setDismissed([]); }}
+                  onClick={() => { setStep('input'); setResult(null); setResumeText(''); setFreeTime([]); setGroupRole([]); setGoodAt([]); setMarketRead([]); setSeniority([]); setProjectPersonal(''); setProjectWork(''); setDependants(''); setDeepFalling(''); setDeepTeach(''); setDeepInvisible(''); setDeepMarket(''); setDismissed([]); setDismissedTags({}); }}
                   style={{ ...btnStyle(true), background: '#27272a', color: '#a1a1aa' }}
                 >
                   Start over
