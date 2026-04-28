@@ -61,6 +61,7 @@ const FREE_TIME = ['building / making','cooking / baking','drawing / painting','
 const ROLES = ['organizer','problem-solver','explainer','finisher','creative one','calm one','connector','detail-checker'];
 const GOOD_AT = ['staying calm under pressure','seeing what others miss','explaining complex things simply','finishing what others abandon','making things look right','keeping everyone on track','juggling many things at once','knowing when something is done'];
 const MARKET = ['contracting fast','shifting, not disappearing','real opportunities if you look','honestly don\'t know','need to pivot entirely'];
+const SENIORITY = ['still learning it','working independently','leading others in it','considered an expert'];
 
 export default function Home() {
   const [step, setStep] = useState('input');
@@ -82,6 +83,7 @@ export default function Home() {
   const [deepTeach, setDeepTeach] = useState('');
   const [deepInvisible, setDeepInvisible] = useState('');
   const [deepMarket, setDeepMarket] = useState('');
+  const [seniority, setSeniority] = useState([]);
 
   const toggleTag = (val, arr, setArr) => {
     setArr(arr.includes(val) ? arr.filter(v => v !== val) : [...arr, val]);
@@ -89,7 +91,7 @@ export default function Home() {
 
   const hasPersonalContent = () => {
     if (deeperMode) return deepFalling.trim() || projectPersonal.trim() || projectWork.trim() || deepTeach.trim() || deepInvisible.trim() || deepMarket.trim();
-    return freeTime.length > 0 || groupRole.length > 0 || goodAt.length > 0 || marketRead.length > 0 || projectPersonal.trim() || projectWork.trim() || dependants.trim();
+    return freeTime.length > 0 || groupRole.length > 0 || goodAt.length > 0 || marketRead.length > 0 || seniority.length > 0 || projectPersonal.trim() || projectWork.trim() || dependants.trim();
   };
 
   const buildPersonalContext = () => {
@@ -109,6 +111,7 @@ export default function Home() {
     if (goodAt.length > 0) parts.push(`People who know me would say I'm remarkably good at: ${goodAt.join(', ')}`);
     if (projectPersonal.trim()) parts.push(`A project I drove start to finish (paid or not): ${projectPersonal}`);
     if (projectWork.trim()) parts.push(`A work project where I had to figure it out as I went: ${projectWork}`);
+    if (seniority.length > 0) parts.push(`For my strongest skill, my level is: ${seniority.join(', ')}`);
     if (marketRead.length > 0) parts.push(`How I read what's happening in my field right now: ${marketRead.join(', ')}`);
     if (dependants.trim()) parts.push(`Managing dependants looks like: ${dependants}`);
     return parts.join('\n\n');
@@ -291,6 +294,12 @@ export default function Home() {
                     />
                   </div>
 
+                  <div style={s.personalCard}>
+                    <p style={s.personalQ}>For your strongest skill — what's your level?</p>
+                    <p style={s.personalHint}>This helps Surface calibrate how your experience is described to hiring managers.</p>
+                    <div>{SENIORITY.map(v => <Tag key={v} val={v} arr={seniority} setArr={setSeniority} />)}</div>
+                  </div>
+
                   <div style={{ ...s.personalCard, border: '1px solid rgba(245,158,11,0.2)' }}>
                     <p style={s.personalQ}>How do you read what's happening in your field right now?</p>
                     <div>{MARKET.map(v => <Tag key={v} val={v} arr={marketRead} setArr={setMarketRead} />)}</div>
@@ -407,7 +416,7 @@ export default function Home() {
                   {copiedAll ? 'Copied all skills ✓' : 'Copy all skills'}
                 </button>
                 <button
-                  onClick={() => { setStep('input'); setResult(null); setResumeText(''); setFreeTime([]); setGroupRole([]); setGoodAt([]); setMarketRead([]); setProjectPersonal(''); setProjectWork(''); setDependants(''); setDeepFalling(''); setDeepTeach(''); setDeepInvisible(''); setDeepMarket(''); }}
+                  onClick={() => { setStep('input'); setResult(null); setResumeText(''); setFreeTime([]); setGroupRole([]); setGoodAt([]); setMarketRead([]); setSeniority([]); setProjectPersonal(''); setProjectWork(''); setDependants(''); setDeepFalling(''); setDeepTeach(''); setDeepInvisible(''); setDeepMarket(''); }}
                   style={{ ...btnStyle(true), background: '#27272a', color: '#a1a1aa' }}
                 >
                   Start over

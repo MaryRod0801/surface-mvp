@@ -31,7 +31,8 @@ Rules:
 - Industry tags must be specific: "UX/UI Design" not just "Tech", "Architectural Visualization" not just "Design"
 - Think unconventionally — surface skills they would never think to list, including leadership, teaching, and emotional resilience
 - If parenting, caregiving, or volunteer work appears, include those competencies too
-- Set "source": "resume" for all skills when no personal context is provided`;
+- Set "source": "resume" for all skills when no personal context is provided
+- If personal context includes a seniority level, calibrate ALL evidence sentences to reflect that level — "still learning it" means emerging competency, "leading others in it" means senior practitioner, "considered an expert" means industry authority`;
 
 const SYSTEM_PROMPT_WITH_PERSONAL = `You are a career translation expert specializing in helping creative and film industry professionals reframe their experience for new industries.
 
@@ -69,7 +70,8 @@ Rules for personal skills:
 - Set "source": "personal"
 
 Industry tags must be specific: "UX/UI Design" not "Tech", "Architectural Visualization" not "Design"
-Think unconventionally — surface skills the user would never think to list`;
+Think unconventionally — surface skills the user would never think to list
+If personal context includes a seniority level, calibrate ALL evidence sentences to reflect that level — "still learning it" means emerging competency, "leading others in it" means senior practitioner, "considered an expert" means industry authority`;
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
