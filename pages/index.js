@@ -208,7 +208,7 @@ export default function Home() {
               <textarea
                 style={{ ...s.textarea, borderColor: resumeText.trim() ? '#52525b' : '#3f3f46' }}
                 rows={14}
-                placeholder={`Alex Chen\nGraphic Designer & Motion Artist\nToronto, ON\n\nEXPERIENCE\nSenior Compositor — Studio XYZ (2018–2024)\n...\n\nPaste your full resume here — the more detail, the richer the translation.`}
+                placeholder={`Name Last Name\nJob Title & Industry\nCity, Province\n\nEXPERIENCE\nSenior Role — Studio or Company (2018–2024)\n...\n\nPaste your full resume here — the more detail, the richer the translation.`}
                 value={resumeText}
                 onChange={e => setResumeText(e.target.value)}
               />
