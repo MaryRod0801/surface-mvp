@@ -70,6 +70,7 @@ export default function Home() {
   const [error, setError] = useState('');
   const [copiedAll, setCopiedAll] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState(null);
+  const [dismissed, setDismissed] = useState([]);
   const [deeperMode, setDeeperMode] = useState(false);
 
   const [freeTime, setFreeTime] = useState([]);
@@ -155,6 +156,8 @@ export default function Home() {
     setCopiedIndex(i);
     setTimeout(() => setCopiedIndex(null), 2000);
   };
+
+  const dismissCard = (i) => setDismissed(prev => [...prev, i]);
 
   const btnStyle = (active) => ({
     width: '100%', padding: '14px 0', borderRadius: 12, fontWeight: 600, fontSize: 14,
@@ -375,26 +378,43 @@ export default function Home() {
               </div>
 
               <div style={s.skillGrid}>
-                {result.skills?.map((skill, i) => (
-                  <div key={i} style={skill.source === 'personal' ? s.cardPersonal : s.card}>
-                    {skill.source === 'personal' && <span style={s.personalBadge}>surfaced from your life</span>}
-                    <button
-                      style={{ ...s.copyBtn, ...(copiedIndex === i ? s.copyBtnDone : {}) }}
-                      onClick={() => copyOne(i, skill)}
-                    >
-                      {copiedIndex === i ? 'Copied' : 'Copy'}
-                    </button>
-                    <p style={s.filmLabel}>{skill.filmLabel}</p>
-                    <p style={s.industryLabel}>{skill.industryLabel}</p>
-                    <p style={s.evidence}>{skill.evidence}</p>
-                    <div style={s.tagRow}>
-                      {skill.industries?.map((ind, j) => (
-                        <span key={j} style={skill.source === 'personal' ? s.tagPersonal : s.tag}>{ind}</span>
-                      ))}
+                {result.skills?.map((skill, i) => {
+                  if (dismissed.includes(i)) return null;
+                  return (
+                    <div key={i} style={skill.source === 'personal' ? s.cardPersonal : s.card}>
+                      {skill.source === 'personal' && <span style={s.personalBadge}>surfaced from your life</span>}
+                      <div style={{ position: 'absolute', top: 16, right: 16, display: 'flex', gap: 6 }}>
+                        <button
+                          style={{ ...s.copyBtn, position: 'static', ...(copiedIndex === i ? s.copyBtnDone : {}) }}
+                          onClick={() => copyOne(i, skill)}
+                        >
+                          {copiedIndex === i ? 'Copied' : 'Copy'}
+                        </button>
+                        <button
+                          style={{ ...s.copyBtn, position: 'static', color: '#52525b' }}
+                          onClick={() => dismissCard(i)}
+                          title="Remove this skill"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                      <p style={s.filmLabel}>{skill.filmLabel}</p>
+                      <p style={s.industryLabel}>{skill.industryLabel}</p>
+                      <p style={s.evidence}>{skill.evidence}</p>
+                      <div style={s.tagRow}>
+                        {skill.industries?.map((ind, j) => (
+                          <span key={j} style={skill.source === 'personal' ? s.tagPersonal : s.tag}>{ind}</span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
+              {dismissed.length > 0 && (
+                <p style={{ fontSize: 12, color: '#52525b', marginBottom: 16, cursor: 'pointer', textDecoration: 'underline' }} onClick={() => setDismissed([])}>
+                  Restore {dismissed.length} hidden skill{dismissed.length > 1 ? 's' : ''}
+                </p>
+              )}
 
               {!result.hasPersonalContext && (
                 <div style={s.surfaceMoreBanner}>
@@ -416,7 +436,7 @@ export default function Home() {
                   {copiedAll ? 'Copied all skills ✓' : 'Copy all skills'}
                 </button>
                 <button
-                  onClick={() => { setStep('input'); setResult(null); setResumeText(''); setFreeTime([]); setGroupRole([]); setGoodAt([]); setMarketRead([]); setSeniority([]); setProjectPersonal(''); setProjectWork(''); setDependants(''); setDeepFalling(''); setDeepTeach(''); setDeepInvisible(''); setDeepMarket(''); }}
+                  onClick={() => { setStep('input'); setResult(null); setResumeText(''); setFreeTime([]); setGroupRole([]); setGoodAt([]); setMarketRead([]); setSeniority([]); setProjectPersonal(''); setProjectWork(''); setDependants(''); setDeepFalling(''); setDeepTeach(''); setDeepInvisible(''); setDeepMarket(''); setDismissed([]); }}
                   style={{ ...btnStyle(true), background: '#27272a', color: '#a1a1aa' }}
                 >
                   Start over
